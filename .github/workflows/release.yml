@@ -1,0 +1,55 @@
+name: Package and publish GitHub release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag (e.g. v0.1.0)"
+        required: true
+        default: "v0.1.0"
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build and test tools
+        run: python -m pip install --upgrade build twine pytest
+      - name: Install project
+        run: python -m pip install -e .
+      - name: Run tests
+        run: python -m pytest -q
+      - name: Build wheel and source distribution
+        run: python -m build
+      - name: Check package metadata
+        run: python -m twine check dist/*
+      - name: Verify package version matches release tag
+        env:
+          RELEASE_TAG: ${{ inputs.version }}
+        run: |
+          python - <<'PY'
+          import os
+          from importlib.metadata import version
+          expected = "v" + version("marketops-ai")
+          actual = os.environ["RELEASE_TAG"]
+          if actual != expected:
+              raise SystemExit(f"Tag {actual} does not match package version {expected}")
+          PY
+      - name: Publish GitHub release and attach distributions
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.version }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/* \
+            --target "$GITHUB_SHA" \
+            --title "MarketOps AI $RELEASE_TAG" \
+            --notes-file RELEASE_NOTES.md \
+            --prerelease

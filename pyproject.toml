@@ -1,14 +1,52 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "marketops-ai"
 version = "0.1.0"
-description = "Synthetic post-trade reconciliation and AI-assisted exception management platform"
+description = "Trade reconciliation and exception intelligence platform using synthetic financial data"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.30,<1", "pydantic>=2,<3", "sqlalchemy>=2,<3", "psycopg[binary]>=3,<4", "httpx>=0.27,<1", "prometheus-client>=0.20,<1"]
+license = "MIT"
+authors = [{name = "Rifa Ferzana"}]
+keywords = ["reconciliation", "trade-operations", "fastapi", "exception-management", "data-engineering"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: FastAPI",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Office/Business :: Financial"
+]
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.30,<1",
+  "pydantic>=2,<3",
+  "sqlalchemy>=2,<3",
+  "psycopg[binary]>=3,<4",
+  "httpx>=0.27,<1",
+  "prometheus-client>=0.20,<1"
+]
 [project.optional-dependencies]
 dev = ["pytest>=8,<10", "ruff>=0.7,<1"]
 ml = ["mlflow>=2.17,<4"]
+[project.scripts]
+marketops-ai = "app.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/Rifa-111/marketops-ai"
+Repository = "https://github.com/Rifa-111/marketops-ai"
+Issues = "https://github.com/Rifa-111/marketops-ai/issues"
+
+[tool.setuptools]
+packages = ["app"]
+
 [tool.pytest.ini_options]
 pythonpath = ["."]
+
 [tool.ruff]
 line-length = 120
 [tool.ruff.lint]

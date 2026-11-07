@@ -1,0 +1,4 @@
+trade_id,instrument,quantity,price
+T1,AAPL,100,210
+T2,MSFT,50,430
+T3,IBM,80,250

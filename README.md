@@ -92,7 +92,3 @@ python -m etl.load_csv
 - **Scalability:** migrations, concurrency-safe updates, event-driven ingestion and workload testing
 - **Deployment:** infrastructure automation, controlled releases and rollback strategies
 
-## Project status and limitations
-
-This is an early-stage technical prototype, not a production financial system. The current investigation engine is **rule-based**, not an integrated LLM. AWS S3 is represented by Terraform configuration; Glue, Lambda, CloudWatch and MLflow integrations are planned rather than implemented. Authentication uses a demonstration API key, and the database credentials are for local development only. Do not expose this configuration to the public internet.
-
